@@ -1,0 +1,13 @@
+{% extends 'cpmisfacerecognition/main.html' %}
+
+{% block content %}
+<h1>Photo Search Results</h1>
+{% if matches %}
+    <ul>
+    {% for child in matches %}
+        <li>{{ child.first_name }} {{ child.last_name }} - <a href="{% url 'child_detail' child.id %}">Details</a></li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+{% endblock %}
