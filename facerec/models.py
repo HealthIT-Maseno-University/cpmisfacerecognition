@@ -2,6 +2,12 @@ from django.db import models
 
 
 # Create your models here.
+class Child(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    gender = models.CharField(max_length=8)
+    photo = models.ImageField(upload_to='children')
+
 
 class MissingChild(models.Model):
     first_name = models.CharField(max_length=100)

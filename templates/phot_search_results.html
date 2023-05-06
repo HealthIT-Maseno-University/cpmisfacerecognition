@@ -1,16 +1,3 @@
-{#{% extends 'cpmisfacerecognition/main.html' %}#}
-{##}
-{#{% block content %}#}
-{#<h1>Photo Search Results</h1>#}
-{#{% if matches %}#}
-{#    <ul>#}
-{#    {% for child in matches %}#}
-{#        <li>{{ child.first_name }} {{ child.last_name }} - <a href="{% url 'child_detail' child.id %}">Details</a></li>#}
-{#    {% endfor %}#}
-{#    </ul>#}
-{#    {% endif %}#}
-{##}
-{#{% endblock %}#}
 
 
 {% extends 'cpmisfacerecognition/main.html' %}
@@ -22,7 +9,7 @@
             <div>
                 <h2>{{ child.first_name }} {{ child.last_name }}</h2>
                 <p>Gender: {{ child.gender }}</p>
-                <img src="" alt="{{ child.first_name }} {{ child.last_name }} photo">
+                <img src="{{ child.photo }}" alt="{{ child.first_name }} {{ child.last_name }} photo">
             </div>
         {% endfor %}
     {% else %}
