@@ -7,7 +7,7 @@
                     <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
                         <div class="card-body p-4 p-md-5">
                             <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Search Missing child</h3>
-                            <form method="post">
+                            <form method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
 
                                 <div class="row">
@@ -15,7 +15,8 @@
 
                                         <div class="form-outline">
                                             <input type="text" id="firstName" class="form-control form-control-lg"
-                                            name="first_name"/>
+                                            name="first_name"
+                                            required/>
                                             <label class="form-label" for="firstName">First Name</label>
                                         </div>
 
@@ -24,7 +25,8 @@
 
                                         <div class="form-outline">
                                             <input type="text" id="lastName" class="form-control form-control-lg"
-                                            name="last_name"/>
+                                            name="last_name"
+                                            required/>
                                             <label class="form-label" for="lastName">Last Name</label>
                                         </div>
 
@@ -41,13 +43,15 @@
 
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="gender" id="femaleGender"
-                                                   value="female" checked/>
+                                                   value="female" checked
+                                            required/>
                                             <label class="form-check-label" for="femaleGender">Female</label>
                                         </div>
 
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="gender" id="maleGender"
-                                                   value="male"/>
+                                                   value="male"
+                                            required/>
                                             <label class="form-check-label" for="maleGender">Male</label>
                                         </div>
 
@@ -58,6 +62,7 @@
                                 <div class="mb-3">
                                     <label for="formFile" class="form-label">Upload Image</label>
                                     <input class="form-control" type="file" id="formFile" name="photo"
+                                           value="photo"
                                     accept="image/*">
                                 </div>
 

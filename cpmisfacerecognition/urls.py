@@ -20,4 +20,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('facerec.urls')),
+    path('api/', include('cpmisfacerecognition.api.urls')),
+    path('api-auth/', include('rest_framework.urls')),
 ]
