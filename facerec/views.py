@@ -5,8 +5,8 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.files.storage import default_storage
 from django.shortcuts import render, redirect
-
-from .models import MissingChild
+import face_recognition
+from .models import MissingChild,AvailableChildPhotos
 
 
 def index(request):
@@ -14,6 +14,7 @@ def index(request):
 
 
 def add_missing_child(request):
+    availablePhotos =AvailableChildPhotos.objects.all()
     context = {}
     if request.method == 'POST':
         first_name = request.POST['first_name']
@@ -30,6 +31,11 @@ def add_missing_child(request):
         child = MissingChild(first_name=first_name, last_name=last_name, photo=photo, gender=gender)
         try:
             child.save()
+            for availablePhoto in availablePhotos:
+                if verify_faces(local_path,settings.MEDIA_ROOT+'/'+availablePhoto.photo.name):
+                    messages.success(request, 'Child found')
+                    return render(request, 'phot_search_results.html', {'child': child,'availablePhoto':availablePhoto})
+                
             return render(request, 'phot_search_results.html')
         except Exception as e:
             print(e)
@@ -40,20 +46,24 @@ def add_missing_child(request):
         return render(request, 'add_missing_child.html', context)
 
 
-def checkResemblance(images,filename):
-    # load and encode uploaded photo
-    uploaded_image = face_recognition.load_image_file(settings.MEDIA_ROOT + '/' + filename)
-    uploaded_encoding = face_recognition.face_encodings(uploaded_image)[0]
-    # search for similar faces in the database
-    children = MissingChild.objects.all()
-    matches = []
-    for child in children:
-        image_path = str(child.photo)
-        image = face_recognition.load_image_file(settings.MEDIA_ROOT + '/' + image_path)
-        encoding = face_recognition.face_encodings(image)[0]
-        match = face_recognition.compare_faces([uploaded_encoding], encoding)[0]
-        if match:
-            matches.append(child)
-    # render results template
-    return matches
 
+def verify_faces(image_path_1, image_path_2):
+    # Load the images of the two faces to compare
+    image_1 = face_recognition.load_image_file(image_path_1)
+    image_2 = face_recognition.load_image_file(image_path_2)
+
+    # Get the face encodings for both images
+    encodings_1 = face_recognition.face_encodings(image_1)
+    encodings_2 = face_recognition.face_encodings(image_2)
+
+    if len(encodings_1) > 0 and len(encodings_2) > 0:
+        # Compare the first face encoding of each image to check if they belong to the same person
+        results = face_recognition.compare_faces([encodings_1[0]], encodings_2[0])
+
+        # Return the results
+        if results[0]:
+            return True
+        else:
+            return False
+    else:
+        return None
