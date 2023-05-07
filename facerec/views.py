@@ -61,7 +61,18 @@ def checkResemblance(images,filename):
 
 
 def compute_ssim_score(img1, img2):
-    
+    """Structural similarity in images refers to the degree of similarity
+    or dissimilarity between two images based on their structural properties. Structural properties can include things like edge information, texture, and color, among others.
+
+    One popular method for measuring structural similarity is the Structural SIMilarity (SSIM) index,
+     which was developed as a metric to assess image quality. SSIM compares the structural information in two images by looking at local windows of pixels and calculating the mean, standard deviation, and covariance of these windows. The SSIM index ranges from -1 to 1, with 1 indicating perfect structural similarity and -1 indicating complete dissimilarity.
+
+    Another method for measuring structural similarity is the Mean Structural Similarity (MSSIM) index, which is similar to SSIM but takes into account the average structural similarity across the entire image rather than just local windows.
+
+    :param img1:
+    :param img2:
+    :return: ssim_score
+    """
     try:
         win_size = min(img1.shape[:2])
         win_size = (win_size // 2) * 2 + 1  # Ensure odd window size
@@ -77,6 +88,23 @@ def compute_ssim_score(img1, img2):
 
 
 def compute_mse_score(img1, img2):
+    """
+The mean squared error is calculated by taking the difference between the predicted and actual values of a quantity, squaring the difference, and then taking the average of the squared differences across all samples. The formula for MSE is:
+
+MSE = 1/n * sum((predicted - actual)^2)
+
+where n is the number of samples in the dataset, predicted is the predicted value
+for a given sample, and actual is the actual value for that sample.
+
+MSE measures the average squared difference between the predicted and actual values,
+ with larger differences contributing more to the final score. A smaller MSE indicates a better fit between the predicted and actual values, while a larger MSE indicates a worse fit.
+
+MSE is commonly used as a loss function in machine learning algorithms,
+where it is optimized during model training to minimize the difference between predicted and actual values.
+    :param img1:
+    :param img2:
+    :return:
+    """
     try:
         if img1.shape == img2.shape:
             mse_score = np.mean((img1 - img2) ** 2)
@@ -88,6 +116,32 @@ def compute_mse_score(img1, img2):
 
 
 def compute_ncc_score(img1, img2):
+    """
+    Normalized cross-correlation (NCC) is a mathematical operation
+     used to compare two signals or images by measuring the similarity between them. NCC is often used in image processing and computer vision applications, such as object recognition, image alignment, and stereo vision.
+
+The NCC between two signals or images is calculated as the correlation
+coefficient between them, normalized to a range between -1 and 1. The formula for NCC is:
+
+NCC(x,y) = (1/n) * sum((x_i - mean(x)) * (y_i - mean(y)) / (std(x) * std(y)))
+
+where x and y are the two signals or images being compared, n is the length of the signals or
+the number of pixels in the images, mean(x) and mean(y) are the mean values of the signals or images, and std(x)
+and std(y) are the standard deviations of the signals or images.
+
+NCC is useful for comparing signals or images that may have differences in brightness or contrast,
+since it normalizes the correlation coefficient by the standard deviations of the signals or images.
+ NCC values closer to 1 indicate a high degree of
+ similarity between the signals or images, while values closer to -1 indicate a high degree of dissimilarity.
+
+In image processing, NCC is often used for template matching,
+ where a template image is compared to a larger search image to find locations
+  where the template appears in the search image. NCC can also be used for stereo vision,
+   where the NCC between corresponding pixels in two stereo images is used to estimate the depth of objects in the scene.
+    :param img1:
+    :param img2:
+    :return:
+    """
     try:
         result = cv2.matchTemplate(img1, img2, cv2.TM_CCORR_NORMED)
         ncc_score = cv2.minMaxLoc(result)[1]
@@ -97,6 +151,18 @@ def compute_ncc_score(img1, img2):
 
 
 def compute_histogram_score(img1, img2):
+    """
+    Histograms are a useful tool for visualizing and understanding the distribution of pixel values in an image.
+     A histogram is a graph that shows the number of pixels for each possible value of a given range of values, or "bin"
+     . For example,
+     a histogram of pixel values in the range 0-255 would have 256 bins, one for each possible pixel value.
+     The correlation coefficient ranges from -1 to 1,
+     with 1 indicating a perfect positive correlation,
+     0 indicating no correlation, and -1 indicating a perfect negative correlation.
+    :param img1:
+    :param img2:
+    :return:
+    """
     try:
         hist1 = cv2.calcHist([img1], [0, 1, 2], None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
         hist2 = cv2.calcHist([img2], [0, 1, 2], None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
