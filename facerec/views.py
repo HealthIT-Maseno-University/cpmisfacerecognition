@@ -61,6 +61,7 @@ def checkResemblance(images,filename):
 
 
 def compute_ssim_score(img1, img2):
+    
     try:
         win_size = min(img1.shape[:2])
         win_size = (win_size // 2) * 2 + 1  # Ensure odd window size
